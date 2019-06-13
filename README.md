@@ -2,6 +2,6 @@
 othello-programming
 # How to build and run
 - build
- - `$ make`
+`$ make`
 - run
- - `$ make run`
+`$ make run`
