@@ -1,5 +1,4 @@
-#ifndef EVALUATOR_HPP_INCLUDED
-#define EVALUATOR_HPP_INCLUDED
+#pragma once
 
 #include "board.hpp"
 #include <vector>
@@ -25,5 +24,3 @@ class perfectevaluator: public evaluator{
 public:
     int evaluate(const board& bd);
 };
-
-#endif

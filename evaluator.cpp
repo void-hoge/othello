@@ -4,7 +4,7 @@ namespace bm = bitmanipulations;
 
 int midevaluator::evaluate(const board& bd){
     if (bd.getboard(bd.getcurrentcolor()) == 0) {
-        return -2147483647;
+        return -intmax;
     }
     int mobility_score = bm::bit_count(bd.history[bd.getturn()].mobility);
     int stable_score = bm::bit_count(bd.getstablediscs(bd.getcurrentcolor())) - bm::bit_count(bd.getstablediscs(1-bd.getcurrentcolor()));

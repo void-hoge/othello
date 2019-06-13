@@ -1,5 +1,4 @@
-#ifndef BOARD_HPP_INCLUDED
-#define BOARD_HPP_INCLUDED
+#pragma once
 
 #include "bitmanipulations.hpp"
 #include <iostream>
@@ -70,8 +69,8 @@ public:
 		init();
 	}
 	void init(){
-		min = -2147483647;
-		max = 2147483647;
+		min = -intmax;
+		max = intmax;
 		current_color = empty;
 	}
 };
@@ -122,5 +121,3 @@ public:
 
 	unsigned int gethash()const;
 };
-
-#endif	//BOARD_HPP_INCLUDED

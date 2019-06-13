@@ -1,5 +1,4 @@
-#ifndef GAME_HPP_INCLUDED
-#define GAME_HPP_INCLUDED
+#pragma once
 
 #include "board.hpp"
 #include "AI.hpp"
@@ -20,5 +19,3 @@ public:
 	void gote();
 	void aivsai();
 };
-
-#endif

@@ -1,9 +1,8 @@
-#ifndef BITMANIPULATIONS_HPP_INCLUDED
-#define BITMANIPULATIONS_HPP_INCLUDED
+#pragma once
 
 using uint64 = unsigned long long;
 
-int INTMAX = 2147483647;
+const int intmax = 2147483647;
 
 //   0 1 2 3 4 5 6 7
 // a . . . . . . . .
@@ -98,5 +97,3 @@ inline int bit_count(uint64 bits){
 	return num;
 };
 }	//namespace bitmanipulations
-
-#endif	//BITMANIPULATIONS_HPP_INCLUDED

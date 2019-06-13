@@ -344,7 +344,7 @@ uint64 board::coordinateToIdx(const char x, const char y)const {
 
 unsigned int board::gethash()const {
 	unsigned int uintmax = 0-1;
-	unsigned int white_hash = (unsigned int)(data[white]&uintmax) ^ (unsigned int)(data[white]>>32);
-	unsigned int black_hash = (unsigned int)(data[black]&uintmax) ^ (unsigned int)(data[black]>>32);
+	unsigned int white_hash = (unsigned int)(data[white]&intmax) ^ (unsigned int)(data[white]>>32);
+	unsigned int black_hash = (unsigned int)(data[black]&intmax) ^ (unsigned int)(data[black]>>32);
 	return white_hash ^ black_hash;
 }

@@ -1,5 +1,4 @@
-#ifndef  AI_HPP_INCLUDED
-#define AI_HPP_INCLUDED
+#pragma once
 
 #include "board.hpp"
 #include "evaluator.hpp"
@@ -25,5 +24,3 @@ private:
 public:
     void move(board& bd);
 };
-
-#endif
