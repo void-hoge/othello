@@ -209,7 +209,6 @@ uint64 board::getflipdiscs(const uint64 put, const color c)const {
 			p = data[1-c],
 			q = (put & 0x7F7F7F7F7F7F7F7F) << 1;
 	uint64 left = p^((p + q) & ~q & ~o);
-	// left *= ((left & ~0x7F7F7F7F7F7F7F7F) == 0) * (((p + q) & o) != 0);
 	left &= (uint64)(0-(((left & ~0x7F7F7F7F7F7F7F7F) == 0) & (((p + q) & o) != 0)));
 
 	//right
@@ -217,7 +216,6 @@ uint64 board::getflipdiscs(const uint64 put, const color c)const {
 	p = bm::horizontal(data[1-c]);
 	q = (bm::horizontal(put & 0xFEFEFEFEFEFEFEFE)) << 1;
 	uint64 right = bm::horizontal(p^((p + q) & ~q & ~o));
-	// right *= ((right & ~0xFEFEFEFEFEFEFEFE) == 0) * (((p + q) & o) != 0);
 	right &= (uint64)(0-(((right & ~0xFEFEFEFEFEFEFEFE) == 0) & (((p + q) & o) != 0)));
 
 	//upper
@@ -225,7 +223,6 @@ uint64 board::getflipdiscs(const uint64 put, const color c)const {
 	p = bm::flip_diagonalA7H0(data[1-c]);
 	q = (bm::flip_diagonalA7H0(put & 0xFFFFFFFFFFFFFF00)) << 1;
 	uint64 upper = bm::flip_diagonalA7H0(p^((p + q) & ~q & ~o));
-	// upper *= ((upper & ~0xFFFFFFFFFFFFFF00) == 0) * (((p + q) & o) != 0);
 	upper &= (uint64)(0-(((upper & ~0xFFFFFFFFFFFFFF00) == 0) & (((p + q) & o) != 0)));
 
 	//lower
@@ -233,7 +230,6 @@ uint64 board::getflipdiscs(const uint64 put, const color c)const {
 	p = bm::flip_diagonalA0H7(data[1-c]);
 	q = (bm::flip_diagonalA0H7(put & 0x00FFFFFFFFFFFFFF)) << 1;
 	uint64 lower = bm::flip_diagonalA0H7(p^((p + q) & ~q & ~o));
-	// lower *= ((lower & ~0x00FFFFFFFFFFFFFF) == 0) * (((p + q) & o) != 0);
 	lower &= (uint64)(0-(((lower & ~0x00FFFFFFFFFFFFFF) == 0) & (((p + q) & o) != 0)));
 
 	//lowerleft
@@ -241,7 +237,6 @@ uint64 board::getflipdiscs(const uint64 put, const color c)const {
 	p = bm::shift_diagonalA7H0(data[1-c]);
 	q = (bm::shift_diagonalA7H0(put & ~0x80808080808080FF)) << 1;
 	uint64 lowerleft = bm::shift_diagonalA0H7(p^((p + q) & ~q & ~o));
-	// lowerleft *= ((lowerleft & 0x80808080808080FF) == 0) * (((p + q) & o) != 0);
 	lowerleft &= (uint64)(0-(((lowerleft & 0x80808080808080FF) == 0) & (((p + q) & o) != 0)));
 
 	//upperleft
@@ -249,7 +244,6 @@ uint64 board::getflipdiscs(const uint64 put, const color c)const {
 	p = bm::shift_diagonalA0H7(data[1-c]);
 	q = (bm::shift_diagonalA0H7(put & ~0xFF80808080808080)) << 1;
 	uint64 upperleft = bm::shift_diagonalA7H0(p^((p + q) & ~q & ~o));
-	// upperleft *= ((upperleft & 0xFF80808080808080) == 0) * (((p + q) & o) != 0);
 	upperleft &= (uint64)(0-(((upperleft & 0xFF80808080808080) == 0) & (((p + q) & o) != 0)));
 
 	//upperright
@@ -257,7 +251,6 @@ uint64 board::getflipdiscs(const uint64 put, const color c)const {
 	p = bm::shift_diagonalA7H0(bm::horizontal(data[1-c]));
 	q = (bm::shift_diagonalA7H0(bm::horizontal(put & ~0x1010101010101FF))) << 1;
 	uint64 upperright = bm::horizontal(bm::shift_diagonalA0H7(p^((p + q) & ~q & ~o)));
-	// upperright *= ((upperright & 0x1010101010101FF) == 0) * (((p + q) & o) != 0);
 	upperright &= (uint64)(0-(((upperright & 0x1010101010101FF) == 0) & (((p + q) & o) != 0)));
 
 	//lowerright
@@ -265,7 +258,6 @@ uint64 board::getflipdiscs(const uint64 put, const color c)const {
 	p = bm::shift_diagonalA0H7(bm::horizontal(data[1-c]));
 	q = (bm::shift_diagonalA0H7(bm::horizontal(put & ~0xFF01010101010101))) << 1;
 	uint64 lowerright = bm::horizontal(bm::shift_diagonalA7H0(p^((p + q) & ~q & ~o)));
-	// lowerright *= ((lowerright & 0xFF01010101010101) == 0) * (((p + q) & o) != 0);
 	lowerright &= (uint64)(0-(((lowerright & 0xFF01010101010101) == 0) & (((p + q) & o) != 0)));
 
 	return left | right | upper | lower | upperleft | upperright | lowerleft | lowerright;
