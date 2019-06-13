@@ -18,7 +18,7 @@ void alphabetaAI::move(board& bd){
     int limit;
     eval = new midevaluator();
     sort(bd, presearch_depth);
-    int evalue, alpha = -2147483647, beta = 2147483647;
+    int evalue, alpha = -INTMAX, beta = INTMAX;
     poseval p;
     //評価関数の宣言と深さ制限の設定
     if (bm::bit_count(bd.getblank()) <= wld_depth) {
@@ -54,7 +54,7 @@ void alphabetaAI::sort(board &bd, const int limit){
     int mobility_size = bm::bit_count(mobility);
     for (int i = 0; i < mobility_size; ++i){
         bd.putdisc(bd.history[bd.getturn()].mobility_list[i].pos);
-        evalue = -alphabeta_recursion(bd, limit-1, -2147483647, 2147483647);
+        evalue = -alphabeta_recursion(bd, limit-1, -INTMAX, INTMAX);
         bd.undo();
         bd.history[bd.getturn()].mobility_list[i].eval = evalue;
     }

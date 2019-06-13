@@ -3,6 +3,8 @@
 
 using uint64 = unsigned long long;
 
+int INTMAX = 2147483647;
+
 //   0 1 2 3 4 5 6 7
 // a . . . . . . . .
 // b . . . . . . . .
@@ -27,7 +29,7 @@ using uint64 = unsigned long long;
 namespace bitmanipulations
 {
 inline uint64 delta_swap(uint64 bits, uint64 mask, int delta) {
-uint64 x = (bits ^ ((uint64)bits >> delta)) & mask;
+	uint64 x = (bits ^ ((uint64)bits >> delta)) & mask;
 	return bits ^ x ^ ((uint64)x << delta);
 };
 
