@@ -1,7 +1,7 @@
 # othello
 othello-programming
 # How to build and run
-- build
+## build
 `$ make`
-- run
+## run
 `$ make run`
