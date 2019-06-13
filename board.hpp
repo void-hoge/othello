@@ -40,7 +40,7 @@ public:
 	log(){
 		init();
 	}
-	void init(){
+	inline void init(){
 		data[white] = 0;
 		data[black] = 0;
 		put_color = empty;
@@ -50,7 +50,7 @@ public:
 			mobility.init();
 		}
 	}
-	void expandmobility(){
+	inline void expandmobility(){
 		int idx = 0;
 		for (uint64 i = 1; i != 0; i<<=1) {
 			if ((mobility & i) != 0) {
@@ -89,13 +89,13 @@ public:
 	void init();
 	std::array<log, 128> history;
 
-	int getturn()const {
+	inline int getturn()const {
 		return turn;
 	}
-	uint64 getboard(const color c) const{
+	inline uint64 getboard(const color c) const{
 		return data[c];
 	}
-	int getcurrentcolor()const {
+	inline int getcurrentcolor()const {
 		return current_color;
 	}
 
