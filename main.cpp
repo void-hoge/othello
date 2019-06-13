@@ -7,8 +7,8 @@
 int main(int argc, char const *argv[]){
 	std::cout << "othello programming.\n";
 	game gm;
-	// gm.sente();
-	gm.aivsai();
+	gm.sente();
+	// gm.aivsai();
 	// gm.gote();
 	return 0;
 }
