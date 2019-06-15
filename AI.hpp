@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include "board.hpp"
 #include "evaluator.hpp"
 
