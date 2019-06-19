@@ -61,20 +61,6 @@ public:
 	}
 };
 
-class hash{
-public:
-	color current_color;
-	int min, max;
-	hash(){
-		init();
-	}
-	void init(){
-		min = -intmax;
-		max = intmax;
-		current_color = empty;
-	}
-};
-
 class board {
 private:
 	uint64 data[2];
@@ -82,6 +68,7 @@ private:
 	color current_color;
 
 	uint64 getflipdiscs(const uint64 put, const color c) const;
+	std::array<int, 1<<16> hash_array;
 public:
 	int countdiscs(const color c)const;
 	board();
@@ -119,5 +106,9 @@ public:
 	void setCUI();
 	uint64 coordinateToIdx(const char x, const char y)const;
 
-	unsigned int gethash()const;
+	unsigned int gethash();
+	void inithasharray();
+	void addhash(const unsigned int idx, const int eval);
+	bool checkhash(const unsigned int idx, const int eval) const;//重複判定 重複があればtrue, なければfalse
+	int gethasheval(const unsigned int idx)const;
 };

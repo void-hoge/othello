@@ -20,6 +20,7 @@ void alphabetaAI::move(board& bd){
     sort(bd, presearch_depth);
     int evalue, alpha = -intmax, beta = intmax;
     poseval p;
+    bd.inithasharray();//ハッシュ表の初期化
     //評価関数の宣言と深さ制限の設定
     if (bm::bit_count(bd.getblank()) <= wld_depth) {
         limit = intmax;

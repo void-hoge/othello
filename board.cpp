@@ -25,6 +25,7 @@ board::board() {
 	data[white] = 0;
 	current_color = black;
 	init();
+	inithasharray();
 }
 
 board::~board() {}
@@ -334,9 +335,32 @@ uint64 board::coordinateToIdx(const char x, const char y)const {
 	return (uint64)1 << ((i*8)+j);
 }
 
-unsigned int board::gethash()const {
-	unsigned int uintmax = 0-1;
-	unsigned int white_hash = (unsigned int)(data[white]&intmax) ^ (unsigned int)(data[white]>>32);
-	unsigned int black_hash = (unsigned int)(data[black]&intmax) ^ (unsigned int)(data[black]>>32);
-	return white_hash ^ black_hash;
+unsigned int board::gethash(){
+	unsigned int white_hash = data[white]>>32 ^ (data[white] & 0xffffffff);
+	white_hash = white_hash>>16 ^ (data[white] & 0xffff);
+	unsigned int black_hash = data[black]>>32 ^ (data[black] & 0xffffffff);
+	black_hash = black_hash>>16 ^ (black_hash & 0xffff);
+	return (white_hash ^ black_hash) ^ ((unsigned int)1-(current_color = white));
+}
+
+void board::inithasharray(){
+	hash_array = {};
+}
+
+void board::addhash(const unsigned int idx, const int eval){
+	hash_array[idx] = eval;
+}
+
+bool board::checkhash(const unsigned int idx, const int eval)const{
+	if ((hash_array[idx] == 0)&&(hash_array[idx] != eval)) {
+		std::cout << "chofuku" << '\n';
+		return true;
+	}else{
+		return false;
+	}
+	//重複があればtrue, なければfalse
+}
+
+int board::gethasheval(const unsigned int idx)const{
+	return hash_array[idx];
 }
