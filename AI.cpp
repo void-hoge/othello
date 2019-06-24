@@ -20,8 +20,6 @@ void alphabetaAI::move(board& bd){
     sort(bd, presearch_depth);
     int evalue, alpha = -intmax, beta = intmax;
     poseval p;
-    bd.inithasharray();//ハッシュ表の初期化
-    //評価関数の宣言と深さ制限の設定
     if (bm::bit_count(bd.getblank()) <= wld_depth) {
         limit = intmax;
         if (bm::bit_count(bd.getblank()) <= perftct_depth) {
@@ -65,7 +63,6 @@ void alphabetaAI::sort(board &bd, const int limit){
 
 int alphabetaAI::alphabeta_recursion(board &bd, const int limit, int alpha, int beta){
     if (limit == 0) {
-        //評価を返す
         return eval -> evaluate(bd);
     }
     uint64 mobility = bd.history[bd.getturn()].mobility;
@@ -90,7 +87,7 @@ int alphabetaAI::alphabeta_recursion(board &bd, const int limit, int alpha, int 
             return eval -> evaluate(bd);
         }
         bd.pass();
-        score = -alphabeta_recursion(bd, limit, -beta, -alpha);   //passの場合は深さ制限そのまま
+        score = -alphabeta_recursion(bd, limit, -beta, -alpha);
         bd.undo();
         return score;
     }
