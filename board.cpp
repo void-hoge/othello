@@ -93,6 +93,7 @@ uint64 board::checkcurrentmobility(){
 bool board::putdisc(const uint64 pos){
 	uint64 flip = getflipdiscs(pos, current_color);
 
+	//checkmobilityによる検証は行なっていない。
 	if (flip == 0) {
 		return false;		//incorrect input;
 	}

@@ -21,7 +21,7 @@ void game::playermove(){
     std::cout << "手を入力してください。" << std::endl;
     std::cin >> x >> y;
     uint64 pos = (uint64)1 << (x*8+y);
-    while (!bd.putdisc(pos)) {
+    while ((!bd.putdisc(pos))&&((bd.checkmobility(bd.getcurrentcolor())&pos) == 0)) {
         std::cout << "そこには打てません。" << std::endl;
         std::cout << "手を入力してください。" << std::endl;
         std::cin >> x >> y;
