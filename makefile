@@ -24,6 +24,16 @@ AI.o: AI.cpp
 run:
 	./$(PROGRAM).out
 
+sente: board.o AI.o evaluator.o game.o
+	$(CC) sente.cpp -c $(STD) $(OPT) -o sente.o
+	$(CC) sente.o board.o AI.o evaluator.o game.o $(STD) $(OPT) -o sente.out
+	./sente.out
+
+gote: board.o AI.o evaluator.o game.o
+	$(CC) gote.cpp -c $(STD) $(OPT) -o gote.o
+	$(CC) gote.o board.o AI.o evaluator.o game.o $(STD) $(OPT) -o gote.out
+	./gote.out
+
 clean:
 	rm -f *.out
 	rm -f *.o
