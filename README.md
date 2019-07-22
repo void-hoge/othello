@@ -1,6 +1,7 @@
 # othello
 othello-programming
 # how to build and run
+C++11以降に対応したコンパイラが必要です。makefileは-std=g++17で書いています。  
 先手  
 `$make sente`  
 後手  
