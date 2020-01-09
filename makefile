@@ -1,5 +1,5 @@
 CC = g++
-STD = -std=c++17
+STD = -std=c++17 -mavx2
 PROGRAM = othello
 OPT = -mtune=native -march=native -flto -O3
 
