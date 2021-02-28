@@ -1,9 +1,5 @@
 #pragma once
 
-<<<<<<< HEAD
-=======
-// #include <immintrin.h>
->>>>>>> 06915b51c98fcd6da584c11ec6f1936b99466242
 #include <x86intrin.h>
 
 using uint64 = unsigned long long;
