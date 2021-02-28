@@ -1,6 +1,7 @@
 #pragma once
 
-#include <immintrin.h>
+// #include <immintrin.h>
+#include <x86intrin.h>
 
 using uint64 = unsigned long long;
 const int intmax = 2147483647;
