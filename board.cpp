@@ -1,6 +1,6 @@
 #include "board.hpp"
 
-void show_binary(uint64 bits) {
+void show_binary(uint64_t bits) {
 	std::bitset<64> n = bits;
 	for (int i = 0; i < 64; i++){
 		if ((i % 8) == 0){
@@ -31,17 +31,17 @@ board::board() {
 board::~board() {}
 
 void board::init() {
-	set((uint64)1 << (3*8+3), white);
-	set((uint64)1 << (4*8+4), white);
-	set((uint64)1 << (3*8+4), black);
-	set((uint64)1 << (4*8+3), black);
+	set((uint64_t)1 << (3*8+3), white);
+	set((uint64_t)1 << (4*8+4), white);
+	set((uint64_t)1 << (3*8+4), black);
+	set((uint64_t)1 << (4*8+3), black);
 	checkcurrentmobility();
 }
 
-color board::check(const uint64 idx)const {
-	if ((uint64)(data[white] & idx)!= 0){
+color board::check(const uint64_t idx)const {
+	if ((uint64_t)(data[white] & idx)!= 0){
 		return white;
-	}else if ((uint64)(data[black] & idx)!= 0){
+	}else if ((uint64_t)(data[black] & idx)!= 0){
 		return black;
 	}
 	return empty;
@@ -51,7 +51,7 @@ int board::countdiscs(const color c)const {
 	return bitmanipulations::bit_count(data[c]);
 }
 
-void board::set(const uint64 idx, const color c) {
+void board::set(const uint64_t idx, const color c) {
 	if (c == empty) {
 		data[white] &= ~idx;
 		data[black] &= ~idx;
@@ -84,14 +84,14 @@ color board::jadge()const {
 	return draw;
 }
 
-uint64 board::checkcurrentmobility(){
+uint64_t board::checkcurrentmobility(){
 	history[turn].mobility = checkmobility(current_color);
 	// history[turn].expandmobility();
 	return history[turn].mobility;
 }
 
-bool board::putdisc(const uint64 pos){
-	uint64 flip = getflipdiscs(pos, current_color);
+bool board::putdisc(const uint64_t pos){
+	uint64_t flip = getflipdiscs(pos, current_color);
 
 	//checkmobilityによる検証は行なっていない。
 	if (flip == 0) {
@@ -153,140 +153,140 @@ bool board::undo(){
 	return true;
 }
 
-uint64 board::checkmobility(const color c)const {
+uint64_t board::checkmobility(const color c)const {
 	namespace bm = bitmanipulations;
 
 	//left
-	uint64 	o = (data[c] & 0x7F7F7F7F7F7F7F7F) << 1,
+	uint64_t 	o = (data[c] & 0x7F7F7F7F7F7F7F7F) << 1,
 			p = data[1-c] & 0xFEFEFEFEFEFEFEFE;
-	uint64 left = (~(p | o) & (p + o)) & 0xFEFEFEFEFEFEFEFE;
+	uint64_t left = (~(p | o) & (p + o)) & 0xFEFEFEFEFEFEFEFE;
 
 	//right
 	o = (bm::horizontal(data[c]) & 0x7F7F7F7F7F7F7F7F) << 1;
 	p = bm::horizontal(data[1-c]) & 0xFEFEFEFEFEFEFEFE;
-	uint64 right = bm::horizontal((~(p | o) & (p + o)) & 0xFEFEFEFEFEFEFEFE);
+	uint64_t right = bm::horizontal((~(p | o) & (p + o)) & 0xFEFEFEFEFEFEFEFE);
 
 	//upper
 	o = (bm::flip_diagonalA7H0(data[c]) & 0x7F7F7F7F7F7F7F7F) << 1;
 	p = bm::flip_diagonalA7H0(data[1-c]) & 0xFEFEFEFEFEFEFEFE;
-	uint64 upper = bm::flip_diagonalA7H0((~(p | o) & (p + o)) & 0xFEFEFEFEFEFEFEFE);
+	uint64_t upper = bm::flip_diagonalA7H0((~(p | o) & (p + o)) & 0xFEFEFEFEFEFEFEFE);
 
 	//lower
 	o = (bm::flip_diagonalA0H7(data[c]) & 0x7F7F7F7F7F7F7F7F) << 1;
 	p = bm::flip_diagonalA0H7(data[1-c]) & 0xFEFEFEFEFEFEFEFE;
-	uint64 lower = bm::flip_diagonalA0H7((~(p | o) & (p + o)) & 0xFEFEFEFEFEFEFEFE);
+	uint64_t lower = bm::flip_diagonalA0H7((~(p | o) & (p + o)) & 0xFEFEFEFEFEFEFEFE);
 
 	//lowerleft
 	o = (bm::shift_diagonalA7H0(data[c] & ~0x80808080808080FF)) << 1;
 	p = bm::shift_diagonalA7H0(data[1-c] & ~0xFF01010101010101);
-	uint64 lowerleft = bm::shift_diagonalA0H7(~(p | o) & (p + o)) & ~0xFF01010101010101;
+	uint64_t lowerleft = bm::shift_diagonalA0H7(~(p | o) & (p + o)) & ~0xFF01010101010101;
 
 	//upperleft
 	o = (bm::shift_diagonalA0H7(data[c] & ~0xFF80808080808080)) << 1;
 	p = bm::shift_diagonalA0H7(data[1-c] & ~ 0x01010101010101FF);
-	uint64 upperleft = bm::shift_diagonalA7H0(~(p | o) & (p + o)) & ~0x01010101010101FF;
+	uint64_t upperleft = bm::shift_diagonalA7H0(~(p | o) & (p + o)) & ~0x01010101010101FF;
 
 	//lowerright
 	o = (bm::shift_diagonalA7H0(bm::horizontal(data[c] & ~0x01010101010101FF))) << 1;
 	p = bm::shift_diagonalA7H0(bm::horizontal(data[1-c] & ~0xFF80808080808080));
-	uint64 lowerright = bm::horizontal(bm::shift_diagonalA0H7(~(p | o) & (p + o))) & ~0xFF80808080808080;
+	uint64_t lowerright = bm::horizontal(bm::shift_diagonalA0H7(~(p | o) & (p + o))) & ~0xFF80808080808080;
 
 	//upperright
 	o = (bm::shift_diagonalA0H7(bm::horizontal(data[c] & ~0xFF01010101010101))) << 1;
 	p = bm::shift_diagonalA0H7(bm::horizontal(data[1-c] & ~0x80808080808080FF));
-	uint64 upperright = bm::horizontal(bm::shift_diagonalA7H0(~(p | o) & (p + o))) & ~0x80808080808080FF;
+	uint64_t upperright = bm::horizontal(bm::shift_diagonalA7H0(~(p | o) & (p + o))) & ~0x80808080808080FF;
 
-	uint64 blank = ~(data[white] | data[black]);
+	uint64_t blank = ~(data[white] | data[black]);
 	return (left | right | upper | lower | upperleft | upperright | lowerleft | lowerright) & blank;
 }
 
-uint64 board::getblank(){
+uint64_t board::getblank(){
 	return ~(data[white] | data[black]);
 }
 
-uint64 board::getflipdiscs(const uint64 put, const color c)const {
+uint64_t board::getflipdiscs(const uint64_t put, const color c)const {
 	namespace bm = bitmanipulations;
 	//left
-	uint64 	o = data[c],
+	uint64_t 	o = data[c],
 			p = data[1-c],
 			q = (put & 0x7F7F7F7F7F7F7F7F) << 1;
-	uint64 left = p^((p + q) & ~q & ~o);
-	left &= (uint64)(0-(((left & ~0x7F7F7F7F7F7F7F7F) == 0) & (((p + q) & o) != 0)));
+	uint64_t left = p^((p + q) & ~q & ~o);
+	left &= (uint64_t)(0-(((left & ~0x7F7F7F7F7F7F7F7F) == 0) & (((p + q) & o) != 0)));
 
 	//right
 	o = bm::horizontal(data[c]);
 	p = bm::horizontal(data[1-c]);
 	q = (bm::horizontal(put & 0xFEFEFEFEFEFEFEFE)) << 1;
-	uint64 right = bm::horizontal(p^((p + q) & ~q & ~o));
-	right &= (uint64)(0-(((right & ~0xFEFEFEFEFEFEFEFE) == 0) & (((p + q) & o) != 0)));
+	uint64_t right = bm::horizontal(p^((p + q) & ~q & ~o));
+	right &= (uint64_t)(0-(((right & ~0xFEFEFEFEFEFEFEFE) == 0) & (((p + q) & o) != 0)));
 
 	//upper
 	o = bm::flip_diagonalA7H0(data[c]);
 	p = bm::flip_diagonalA7H0(data[1-c]);
 	q = (bm::flip_diagonalA7H0(put & 0xFFFFFFFFFFFFFF00)) << 1;
-	uint64 upper = bm::flip_diagonalA7H0(p^((p + q) & ~q & ~o));
-	upper &= (uint64)(0-(((upper & ~0xFFFFFFFFFFFFFF00) == 0) & (((p + q) & o) != 0)));
+	uint64_t upper = bm::flip_diagonalA7H0(p^((p + q) & ~q & ~o));
+	upper &= (uint64_t)(0-(((upper & ~0xFFFFFFFFFFFFFF00) == 0) & (((p + q) & o) != 0)));
 
 	//lower
 	o = bm::flip_diagonalA0H7(data[c]);
 	p = bm::flip_diagonalA0H7(data[1-c]);
 	q = (bm::flip_diagonalA0H7(put & 0x00FFFFFFFFFFFFFF)) << 1;
-	uint64 lower = bm::flip_diagonalA0H7(p^((p + q) & ~q & ~o));
-	lower &= (uint64)(0-(((lower & ~0x00FFFFFFFFFFFFFF) == 0) & (((p + q) & o) != 0)));
+	uint64_t lower = bm::flip_diagonalA0H7(p^((p + q) & ~q & ~o));
+	lower &= (uint64_t)(0-(((lower & ~0x00FFFFFFFFFFFFFF) == 0) & (((p + q) & o) != 0)));
 
 	//lowerleft
 	o = bm::shift_diagonalA7H0(data[c]);
 	p = bm::shift_diagonalA7H0(data[1-c]);
 	q = (bm::shift_diagonalA7H0(put & ~0x80808080808080FF)) << 1;
-	uint64 lowerleft = bm::shift_diagonalA0H7(p^((p + q) & ~q & ~o));
-	lowerleft &= (uint64)(0-(((lowerleft & 0x80808080808080FF) == 0) & (((p + q) & o) != 0)));
+	uint64_t lowerleft = bm::shift_diagonalA0H7(p^((p + q) & ~q & ~o));
+	lowerleft &= (uint64_t)(0-(((lowerleft & 0x80808080808080FF) == 0) & (((p + q) & o) != 0)));
 
 	//upperleft
 	o = bm::shift_diagonalA0H7(data[c]);
 	p = bm::shift_diagonalA0H7(data[1-c]);
 	q = (bm::shift_diagonalA0H7(put & ~0xFF80808080808080)) << 1;
-	uint64 upperleft = bm::shift_diagonalA7H0(p^((p + q) & ~q & ~o));
-	upperleft &= (uint64)(0-(((upperleft & 0xFF80808080808080) == 0) & (((p + q) & o) != 0)));
+	uint64_t upperleft = bm::shift_diagonalA7H0(p^((p + q) & ~q & ~o));
+	upperleft &= (uint64_t)(0-(((upperleft & 0xFF80808080808080) == 0) & (((p + q) & o) != 0)));
 
 	//upperright
 	o = bm::shift_diagonalA7H0(bm::horizontal(data[c]));
 	p = bm::shift_diagonalA7H0(bm::horizontal(data[1-c]));
 	q = (bm::shift_diagonalA7H0(bm::horizontal(put & ~0x1010101010101FF))) << 1;
-	uint64 upperright = bm::horizontal(bm::shift_diagonalA0H7(p^((p + q) & ~q & ~o)));
-	upperright &= (uint64)(0-(((upperright & 0x1010101010101FF) == 0) & (((p + q) & o) != 0)));
+	uint64_t upperright = bm::horizontal(bm::shift_diagonalA0H7(p^((p + q) & ~q & ~o)));
+	upperright &= (uint64_t)(0-(((upperright & 0x1010101010101FF) == 0) & (((p + q) & o) != 0)));
 
 	//lowerright
 	o = bm::shift_diagonalA0H7(bm::horizontal(data[c]));
 	p = bm::shift_diagonalA0H7(bm::horizontal(data[1-c]));
 	q = (bm::shift_diagonalA0H7(bm::horizontal(put & ~0xFF01010101010101))) << 1;
-	uint64 lowerright = bm::horizontal(bm::shift_diagonalA7H0(p^((p + q) & ~q & ~o)));
-	lowerright &= (uint64)(0-(((lowerright & 0xFF01010101010101) == 0) & (((p + q) & o) != 0)));
+	uint64_t lowerright = bm::horizontal(bm::shift_diagonalA7H0(p^((p + q) & ~q & ~o)));
+	lowerright &= (uint64_t)(0-(((lowerright & 0xFF01010101010101) == 0) & (((p + q) & o) != 0)));
 
 	return left | right | upper | lower | upperleft | upperright | lowerleft | lowerright;
 }
 
-uint64 board::getstablediscs(const color c)const {
+uint64_t board::getstablediscs(const color c)const {
 	namespace bm = bitmanipulations;
-	uint64 left = data[c] & 0xFF000000000000FF;
-	uint64 s = left + 0x0100000000000001;
+	uint64_t left = data[c] & 0xFF000000000000FF;
+	uint64_t s = left + 0x0100000000000001;
 	left = (left ^ s) & ~s;
 
-	uint64 right = bm::horizontal(data[c]) & 0xFF000000000000FF;
+	uint64_t right = bm::horizontal(data[c]) & 0xFF000000000000FF;
 	s = right + 0x0100000000000001;
 	right = bm::horizontal((right ^ s) & ~s);
 
-	uint64 upper = bm::flip_diagonalA0H7(data[c]) & 0xFF000000000000FF;
+	uint64_t upper = bm::flip_diagonalA0H7(data[c]) & 0xFF000000000000FF;
 	s = upper + 0x0100000000000001;
 	upper = bm::flip_diagonalA0H7((upper ^ s) & ~s);
 
-	uint64 lower = bm::flip_diagonalA7H0(data[c]) & 0xFF000000000000FF;
+	uint64_t lower = bm::flip_diagonalA7H0(data[c]) & 0xFF000000000000FF;
 	s = lower + 0x0100000000000001;
 	lower = bm::flip_diagonalA7H0((lower ^ s) & ~s);
 
 	return left | right | upper | lower;
 }
 
-uint64 board::getcornerdiscs(const color c)const {
+uint64_t board::getcornerdiscs(const color c)const {
 	return data[c] & 0x8100000000000018;
 }
 
@@ -299,14 +299,14 @@ void board::setCUI() {
 }
 
 void board::showCUI()const {
-	uint64 mobility = history[turn].mobility;
+	uint64_t mobility = history[turn].mobility;
 	std::cout << "+-0-+-1-+-2-+-3-+-4-+-5-+-6-+-7-+" << std::endl;
 	char al = '0';
 	for (int i = 0; i < 8; i++) {
 		std::cout << al;
 		al++;
 		for (int j = 0; j < 8; j++) {
-			switch (check((uint64)1 << ((i*8)+j))) {
+			switch (check((uint64_t)1 << ((i*8)+j))) {
 				case white:
 					std::cout << " o |";
 					break;
@@ -314,7 +314,7 @@ void board::showCUI()const {
 					std::cout << " * |";
 					break;
 				case empty:
-					if ((mobility & (uint64)1<<(i*8+j)) != 0) {
+					if ((mobility & (uint64_t)1<<(i*8+j)) != 0) {
 						std::cout << " . |";
 					}else{
 						std::cout << "   |";
@@ -328,12 +328,12 @@ void board::showCUI()const {
 	std::cout << std::endl;
 }
 
-uint64 board::coordinateToIdx(const char x, const char y)const {
+uint64_t board::coordinateToIdx(const char x, const char y)const {
 	//x: a~h, ancii: 97 ~ 104
 	//y: 0~7, ancii: 48 ~ 55
 	int i = x-97;
 	int j = y-48;
-	return (uint64)1 << ((i*8)+j);
+	return (uint64_t)1 << ((i*8)+j);
 }
 
 unsigned int board::gethash(){

@@ -5,7 +5,7 @@ namespace bm = bitmanipulations;
 
 void alphabetaAI::move(board& bd){
 	// show_binary(bd.gethash());
-	uint64 mobility = bd.checkcurrentmobility();
+	uint64_t mobility = bd.checkcurrentmobility();
 
 	if (mobility == 0) {
 		bd.pass();
@@ -47,7 +47,7 @@ void alphabetaAI::move(board& bd){
 }
 
 void alphabetaAI::sort(board &bd, const int limit){
-	uint64 mobility = bd.history[bd.getturn()].mobility;
+	uint64_t mobility = bd.history[bd.getturn()].mobility;
 	bd.history[bd.getturn()].expandmobility();
 	int evalue;
 	int mobility_size = bm::bit_count(mobility);
@@ -65,7 +65,7 @@ int alphabetaAI::alphabeta_recursion(board &bd, const int limit, int alpha, int 
 	if (limit == 0) {
 		return eval -> evaluate(bd);
 	}
-	uint64 mobility = bd.history[bd.getturn()].mobility;
+	uint64_t mobility = bd.history[bd.getturn()].mobility;
 	int score;
 	if ((bd.getblank() == mobility) && (bm::bit_count(mobility) == 1)) {
 		bd.putdisc(mobility);
@@ -74,7 +74,7 @@ int alphabetaAI::alphabeta_recursion(board &bd, const int limit, int alpha, int 
 		return score;
 	}
 	if (mobility == 0) {
-		uint64 antimobility = bd.checkmobility(1-bd.getcurrentcolor());
+		uint64_t antimobility = bd.checkmobility(1-bd.getcurrentcolor());
 		if ((antimobility == bd.getblank()) && (bm::bit_count(antimobility) == 1)) {
 			bd.pass();
 			bd.putdisc(antimobility);

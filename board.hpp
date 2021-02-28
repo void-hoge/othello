@@ -12,11 +12,11 @@ const color white = 1;
 const color empty = 2;
 const color draw = -1;
 
-void show_binary(uint64 bits);
+void show_binary(uint64_t bits);
 
 class poseval{
 public:
-	uint64 pos;
+	uint64_t pos;
 	int eval;
 	poseval(){
 		init();
@@ -31,10 +31,10 @@ bool comp(const poseval a, const poseval b);
 
 class log{
 public:
-	uint64 data[2];
+	uint64_t data[2];
 	color put_color;
 	bool pass;
-	uint64 mobility;
+	uint64_t mobility;
 	std::array<poseval, 32> mobility_list;			//そのturnでの手はmobility_listに含まれる手が選択される。そのため、put_colorのmobilityである。
 
 	log(){
@@ -52,7 +52,7 @@ public:
 	}
 	inline void expandmobility(){
 		int idx = 0;
-		for (uint64 i = 1; i != 0; i<<=1) {
+		for (uint64_t i = 1; i != 0; i<<=1) {
 			if ((mobility & i) != 0) {
 				mobility_list[idx].pos = i;
 				idx++;
@@ -63,11 +63,11 @@ public:
 
 class board {
 private:
-	uint64 data[2];
+	uint64_t data[2];
 	int turn;
 	color current_color;
 
-	uint64 getflipdiscs(const uint64 put, const color c) const;
+	uint64_t getflipdiscs(const uint64_t put, const color c) const;
 	std::array<int, 1<<16> hash_array;
 public:
 	int countdiscs(const color c)const;
@@ -79,7 +79,7 @@ public:
 	inline int getturn()const {
 		return turn;
 	}
-	inline uint64 getboard(const color c) const{
+	inline uint64_t getboard(const color c) const{
 		return data[c];
 	}
 	inline int getcurrentcolor()const {
@@ -89,22 +89,22 @@ public:
 	bool isgameover()const;
 	color jadge() const;
 
-	uint64 checkcurrentmobility();
-	bool putdisc(const uint64 pos);
+	uint64_t checkcurrentmobility();
+	bool putdisc(const uint64_t pos);
 	bool pass();
 	bool undo();
 
-	uint64 checkmobility(const color c) const;
-	uint64 getblank();
-	uint64 getcornerdiscs(const color c) const;
-	uint64 getstablediscs(const color c)const;
+	uint64_t checkmobility(const color c) const;
+	uint64_t getblank();
+	uint64_t getcornerdiscs(const color c) const;
+	uint64_t getstablediscs(const color c)const;
 
-	void set(const uint64 idx, const color c);
-	color check(const uint64 idx)const;
+	void set(const uint64_t idx, const color c);
+	color check(const uint64_t idx)const;
 
 	void showCUI()const;
 	void setCUI();
-	uint64 coordinateToIdx(const char x, const char y)const;
+	uint64_t coordinateToIdx(const char x, const char y)const;
 
 	unsigned int gethash();
 	void inithasharray();

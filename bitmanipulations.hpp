@@ -2,8 +2,7 @@
 
 #include <x86intrin.h>
 
-using uint64 = unsigned long long;
-const int intmax = 2147483647;
+const int intmax = ~(1<<31);
 
 //   0 1 2 3 4 5 6 7
 // a . . . . . . . .
@@ -28,42 +27,42 @@ const int intmax = 2147483647;
 
 namespace bitmanipulations
 {
-inline uint64 delta_swap(uint64 bits, uint64 mask, int delta) {
-	uint64 x = (bits ^ ((uint64)bits >> delta)) & mask;
-	return bits ^ x ^ ((uint64)x << delta);
+inline uint64_t delta_swap(uint64_t bits, uint64_t mask, int delta) {
+	uint64_t x = (bits ^ ((uint64_t)bits >> delta)) & mask;
+	return bits ^ x ^ ((uint64_t)x << delta);
 }
 
-inline uint64 horizontal(uint64 t){
+inline uint64_t horizontal(uint64_t t){
 	t = delta_swap(t, 0x0F0F0F0F0F0F0F0F, 4);
 	t = delta_swap(t, 0x3333333333333333, 2);
 	return delta_swap(t, 0x5555555555555555, 1);
 }
 
-inline uint64 vertical(uint64 t){
+inline uint64_t vertical(uint64_t t){
 	t = delta_swap(t, 0x00000000FFFFFFFF, 32);
 	t = delta_swap(t, 0x0000FFFF0000FFFF, 16);
 	return delta_swap(t, 0x00FF00FF00FF00FF, 8);
 }
 
-inline uint64 flip_diagonalA0H7(uint64 bits){
+inline uint64_t flip_diagonalA0H7(uint64_t bits){
 	bits = delta_swap(bits, 0x00000000F0F0F0F0, 28);
 	bits = delta_swap(bits, 0x0000CCCC0000CCCC, 14);
 	return delta_swap(bits, 0x00AA00AA00AA00AA,  7);
 }
 
-inline uint64 flip_diagonalA7H0(uint64 bits){
+inline uint64_t flip_diagonalA7H0(uint64_t bits){
 	bits = delta_swap(bits, 0x000000000F0F0F0F, 36);
 	bits = delta_swap(bits, 0x0000333300003333, 18);
 	return delta_swap(bits, 0x0055005500550055, 9);
 }
 
-inline uint64 shift_diagonalA7H0(uint64 n){
+inline uint64_t shift_diagonalA7H0(uint64_t n){
 	n = (n & ~0xF0F0F0F0F0F0F0F0) | ((n & 0xF0F0F0F0F0F0F0F0) << 32) | ((n & 0xF0F0F0F0F0F0F0F0) >> 32);
 	n = (n & ~0xCCCCCCCCCCCCCCCC) | ((n & 0xCCCCCCCCCCCCCCCC) << 16) | ((n & 0xCCCCCCCCCCCCCCCC) >> 48);
 	return (n & ~0xAAAAAAAAAAAAAAAA) | ((n & 0xAAAAAAAAAAAAAAAA) << 8) | ((n & 0xAAAAAAAAAAAAAAAA) >> 56);
 }
 
-inline uint64 shift_diagonalA0H7(uint64 n){
+inline uint64_t shift_diagonalA0H7(uint64_t n){
 	n = (n & ~0xF0F0F0F0F0F0F0F0) | ((n & 0xF0F0F0F0F0F0F0F0) >> 32) | ((n & 0xF0F0F0F0F0F0F0F0) << 32);
 	n = (n & ~0xCCCCCCCCCCCCCCCC) | ((n & 0xCCCCCCCCCCCCCCCC) >> 16) | ((n & 0xCCCCCCCCCCCCCCCC) << 48);
 	return (n & ~0xAAAAAAAAAAAAAAAA) | ((n & 0xAAAAAAAAAAAAAAAA) >> 8) | ((n & 0xAAAAAAAAAAAAAAAA) << 56);
@@ -88,11 +87,11 @@ inline uint64 shift_diagonalA0H7(uint64 n){
 // 	4, 5, 5, 6, 5, 6, 6, 7, 5, 6, 6, 7, 6, 7, 7, 8,
 // };
 
-inline int bit_count(uint64 bits) {
+inline int bit_count(uint64_t bits) {
 	return _popcnt64(bits);
 }
 
-// inline int bit_count(uint64 bits){
+// inline int bit_count(uint64_t bits){
 //	int num  = 0;
 //
 //	for (int i=0 ; i < sizeof(bits) ; i++ ) {
@@ -102,7 +101,7 @@ inline int bit_count(uint64 bits) {
 //	return num;
 // }
 
-// inline int bit_count(uint64 bits){
+// inline int bit_count(uint64_t bits){
 //     bits = (bits & 0x5555555555555555) + ((bits >> 1) & 0x5555555555555555);
 //     bits = (bits & 0x3333333333333333) + ((bits >> 2) & 0x3333333333333333);
 //     bits = (bits & 0x0f0f0f0f0f0f0f0f) + ((bits >> 4) & 0x0f0f0f0f0f0f0f0f);
