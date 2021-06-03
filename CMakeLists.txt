@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
 project(othello CXX)
 add_executable(a.out main.cpp board.cpp AI.cpp evaluator.cpp game.cpp)
-set(CMAKE_CXX_COMPILER "g++-10")
+set(CMAKE_CXX_COMPILER "g++-11")
 set(CMAKE_CXX_FLAGS "-std=c++11 -O2 -mtune=native -march=native -mavx2")
